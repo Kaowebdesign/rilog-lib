@@ -1,0 +1,9 @@
+export const BASE_URL = 'http://localhost:3000';
+export const RIL_TOKEN = 'riltoken'; // label for saving unique user (connection) token in Local Storage
+export const RIL_REQUESTS = 'rilrequests'; // label for saving reuqests in Local Storage
+export const REQUESTS_ARRAY_LIMIT = 10; // max availble requests data for saving in localStorage
+export const SHORT_TIMER_LIMIT = 60000; // use it for check saving request data (for limit)
+export const LONG_TIMER_LIMIT = 12000; // use it for check saving request data (without request during long time)
+export const SUCCESS_RESPONSE_STATUS_START_CODE = '2';
+export const TOKEN_GENERATION_SALT = 'rilog by kaowebdev';
+export const TOKEN_GENERATION_TIMESTAMP = '3456745647';
