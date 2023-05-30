@@ -1,18 +1,18 @@
-import { Rilog } from "..";
-import { saveRequests } from "./requests";
-import { LONG_TIMER_LIMIT, SHORT_TIMER_LIMIT } from "../constants";
-import { state, updatePartState } from "../state";
-import { IRilogRequestItem } from "../types";
+import { Rilog } from '..';
+import { saveRequests } from './requests';
+import { LONG_TIMER_LIMIT, SHORT_TIMER_LIMIT } from '../constants';
+import { state, updatePartState } from '../state';
+import { IRilogRequestItem } from '../types';
 
 /**
  * Start/Clear timers
  */
 const startShortTimer = () => {
     updatePartState({
-      shortTimer: setTimeout(() => {
-        // push empty response
-        Rilog.pushResponse({});
-      }, state.config?.timeout || SHORT_TIMER_LIMIT),
+        shortTimer: setTimeout(() => {
+            // push empty response
+            Rilog.pushResponse({});
+        }, state.config?.timeout || SHORT_TIMER_LIMIT),
     });
 };
 
@@ -23,9 +23,9 @@ const clearShortTimer = () => {
 
 const startLongTimer = (data: IRilogRequestItem[]) => {
     updatePartState({
-      longTimer: setTimeout(() => {
-        saveRequests(data);
-      }, LONG_TIMER_LIMIT),
+        longTimer: setTimeout(() => {
+            saveRequests(data);
+        }, LONG_TIMER_LIMIT),
     });
 };
 

@@ -2,11 +2,7 @@ import * as CryptoJS from 'crypto-js';
 // adapters
 import { axiosAdapterRequest, axiosAdapterResponse } from './adapters';
 // types
-import {
-  TRilogInit,
-  IRilogRequestTimed, TRilogPushRequest,
-  TRilogPushResponse, IRilogResponseTimed, IRilogRequestItem,
-} from './types';
+import { TRilogInit, IRilogRequestTimed, TRilogPushRequest, TRilogPushResponse, IRilogResponseTimed, IRilogRequestItem } from './types';
 // state
 import { state, updatePartState } from './state';
 // api
@@ -23,115 +19,112 @@ import { pushRequests } from './utils/requests';
  */
 
 type TRilog = {
-  init: (data: TRilogInit) => void;
-  pushRequest: (data: TRilogPushRequest) => void;
-  pushResponse: (data: TRilogPushResponse) => void;
+    init: (data: TRilogInit) => void;
+    pushRequest: (data: TRilogPushRequest) => void;
+    pushResponse: (data: TRilogPushResponse) => void;
 };
 
 const Rilog = {
-  // methods
-  init: async ({ key, config }: TRilogInit) => {
-    const token = getUserUniqToken();
+    // methods
+    init: async ({ key, config }: TRilogInit) => {
+        const token = getUserUniqToken();
 
-    /**
-     * Save appId (app key) to the state
-     * @param key {string}
-     */
-    updatePartState({ key });
+        /**
+         * Save appId (app key) to the state
+         * @param key {string}
+         */
+        updatePartState({ key });
 
-    const externalInfo = getExternalInfo();
+        const externalInfo = getExternalInfo();
 
-    const data = await initRequest({ uToken: token, appId: key, externalInfo });
+        const data = await initRequest({ uToken: token, appId: key, externalInfo });
 
-    updatePartState({
-      token: data.access_token,
-      salt: data.salt,
-      recording: data.recording,
-      init: true,
-      config: config || null,
-    });
-  },
-  pushRequest: (data: TRilogPushRequest) => {
-    // exit if recording is stopped
-    if (!state.recording) {
-      return;
-    }
-
-    const preparedRequest = axiosAdapterRequest(data);
-    const timedRequest: IRilogRequestTimed | null = preparedRequest
-      ? {
-          ...preparedRequest,
-          timestamp: Date.now(),
-          locationOrigin: window.location?.origin || null,
-          locationHref: window.location?.href || null,
-          localStorage: JSON.stringify(localStorage),
+        updatePartState({
+            token: data.access_token,
+            salt: data.salt,
+            recording: data.recording,
+            init: true,
+            config: config || null,
+        });
+    },
+    pushRequest: (data: TRilogPushRequest) => {
+        // exit if recording is stopped
+        if (!state.recording) {
+            return;
         }
-      : null;
 
-    startShortTimer();
+        const preparedRequest = axiosAdapterRequest(data);
+        const timedRequest: IRilogRequestTimed | null = preparedRequest
+            ? {
+                  ...preparedRequest,
+                  timestamp: Date.now(),
+                  locationOrigin: window.location?.origin || null,
+                  locationHref: window.location?.href || null,
+                  localStorage: JSON.stringify(localStorage),
+              }
+            : null;
 
-    if (timedRequest) {
-      let filteredRequest: IRilogRequestTimed | null = null;
+        startShortTimer();
 
-      const requestFilter = createRequestFilter(state.config);
+        if (timedRequest) {
+            let filteredRequest: IRilogRequestTimed | null = null;
 
-      filteredRequest = requestFilter.sensetive(timedRequest);
-      filteredRequest = requestFilter.sensetiveData(filteredRequest);
-      filteredRequest = requestFilter.headers(filteredRequest);
-      filteredRequest = requestFilter.storage(filteredRequest);
+            const requestFilter = createRequestFilter(state.config);
 
-      updatePartState({ request: filteredRequest || null });
-    }
-  },
-  pushResponse: (data: TRilogPushResponse) => {
-    // exit if recording is stopped
-    if (!state.recording) {
-      return;
-    }
+            filteredRequest = requestFilter.sensetive(timedRequest);
+            filteredRequest = requestFilter.sensetiveData(filteredRequest);
+            filteredRequest = requestFilter.headers(filteredRequest);
+            filteredRequest = requestFilter.storage(filteredRequest);
 
-    const preparedResponse = axiosAdapterResponse(data);
+            updatePartState({ request: filteredRequest || null });
+        }
+    },
+    pushResponse: (data: TRilogPushResponse) => {
+        // exit if recording is stopped
+        if (!state.recording) {
+            return;
+        }
 
-    const timedResponse: IRilogResponseTimed | null = preparedResponse
-      ? { ...preparedResponse, timestamp: Date.now() }
-      : null;
+        const preparedResponse = axiosAdapterResponse(data);
 
-    clearShortTimer();
+        const timedResponse: IRilogResponseTimed | null = preparedResponse ? { ...preparedResponse, timestamp: Date.now() } : null;
 
-    if (timedResponse && state.request) {
-      const fullRequest: IRilogRequestItem = {
-        _id: Date.now().toString(),
-        request: state.request,
-        response: timedResponse,
-      };
+        clearShortTimer();
 
-      clearLongTimer();
+        if (timedResponse && state.request) {
+            const fullRequest: IRilogRequestItem = {
+                _id: Date.now().toString(),
+                request: state.request,
+                response: timedResponse,
+            };
 
-      pushRequests(fullRequest);
-    } else {
-      if (state.request) {
-        const fullRequest: IRilogRequestItem = {
-          _id: Date.now().toString(),
-          request: state.request,
-          response: {
-            data: 'No response from server. Timeout.',
-            status: '',
-            timestamp: Date.now(),
-          },
-        };
+            clearLongTimer();
 
-        clearLongTimer();
+            pushRequests(fullRequest);
+        } else {
+            if (state.request) {
+                const fullRequest: IRilogRequestItem = {
+                    _id: Date.now().toString(),
+                    request: state.request,
+                    response: {
+                        data: 'No response from server. Timeout.',
+                        status: '',
+                        timestamp: Date.now(),
+                    },
+                };
 
-        pushRequests(fullRequest);
-      }
-    }
-  },
+                clearLongTimer();
+
+                pushRequests(fullRequest);
+            }
+        }
+    },
 } as TRilog;
 
-
 const getExternalInfo = () => {
-  return {
-    userAgent: navigator.userAgent,
-  };
+    return {
+        userAgent: navigator.userAgent,
+    };
 };
 
 export { Rilog };

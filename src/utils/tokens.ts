@@ -1,4 +1,4 @@
-import { RIL_TOKEN, TOKEN_GENERATION_SALT, TOKEN_GENERATION_TIMESTAMP } from "../constants";
+import { RIL_TOKEN, TOKEN_GENERATION_SALT, TOKEN_GENERATION_TIMESTAMP } from '../constants';
 
 /* tslint:disable:no-var-requires */
 const TokenGenerator = require('token-generator')({
@@ -14,12 +14,12 @@ const getUserUniqToken = (): string => {
     const savedToken = localStorage.getItem(RIL_TOKEN);
 
     if (savedToken) {
-      return savedToken;
+        return savedToken;
     } else {
-      const token = TokenGenerator.generate();
-      localStorage.setItem(RIL_TOKEN, token);
+        const token = TokenGenerator.generate();
+        localStorage.setItem(RIL_TOKEN, token);
 
-      return token;
+        return token;
     }
 };
 

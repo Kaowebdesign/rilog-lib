@@ -1,9 +1,9 @@
-import { saveRequest } from "../api";
-import { REQUESTS_ARRAY_LIMIT, RIL_REQUESTS } from "../constants";
-import { updatePartState } from "../state";
-import { IRilogRequestItem } from "../types";
-import { encrypt } from "./encrypt";
-import { startLongTimer } from "./timers";
+import { saveRequest } from '../api';
+import { REQUESTS_ARRAY_LIMIT, RIL_REQUESTS } from '../constants';
+import { updatePartState } from '../state';
+import { IRilogRequestItem } from '../types';
+import { encrypt } from './encrypt';
+import { startLongTimer } from './timers';
 
 /**
  * Set/Update requests in localStorage
@@ -14,18 +14,18 @@ const pushRequests = (data: IRilogRequestItem) => {
     const requestArray: IRilogRequestItem[] = requests ? JSON.parse(requests) : [];
 
     if (requestArray) {
-      requestArray.push(data);
+        requestArray.push(data);
 
-      if (requestArray.length > REQUESTS_ARRAY_LIMIT) {
-        saveRequests(requestArray);
-      } else {
-        localStorage.removeItem(RIL_REQUESTS);
-        localStorage.setItem(RIL_REQUESTS, JSON.stringify(requestArray));
+        if (requestArray.length > REQUESTS_ARRAY_LIMIT) {
+            saveRequests(requestArray);
+        } else {
+            localStorage.removeItem(RIL_REQUESTS);
+            localStorage.setItem(RIL_REQUESTS, JSON.stringify(requestArray));
 
-        startLongTimer(requestArray);
-      }
+            startLongTimer(requestArray);
+        }
     } else {
-      localStorage.setItem(RIL_REQUESTS, JSON.stringify([data]));
+        localStorage.setItem(RIL_REQUESTS, JSON.stringify([data]));
     }
 
     updatePartState({ request: null });
@@ -40,7 +40,7 @@ const saveRequests = async (data: IRilogRequestItem[]) => {
     const result = await saveRequest(encryptedRequests);
 
     if (result.result.toLowerCase() === 'success') {
-      localStorage.removeItem(RIL_REQUESTS);
+        localStorage.removeItem(RIL_REQUESTS);
     }
 };
 

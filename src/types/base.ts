@@ -1,4 +1,4 @@
-import { IRilogRequestTimed } from "./requests";
+import { IRilogRequestTimed } from './requests';
 
 export type TRilogInit = {
     key: string;

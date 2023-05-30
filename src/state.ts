@@ -1,4 +1,4 @@
-import { IRilogRequestTimed, TRilogState } from "./types";
+import { IRilogRequestTimed, TRilogState } from './types';
 
 let state = {
     init: false, // app done init
@@ -19,12 +19,12 @@ let state = {
 
 /**
  * Update some fields of state
- * @param updatedPartState 
+ * @param updatedPartState
  */
 const updatePartState = (updatedPartState: object) => {
     state = {
         ...state,
-        ...updatedPartState
+        ...updatedPartState,
     };
 };
 

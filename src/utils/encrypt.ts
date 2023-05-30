@@ -1,5 +1,5 @@
-import { state } from "../state";
-import { IRilogRequestItem } from "../types";
+import { state } from '../state';
+import { IRilogRequestItem } from '../types';
 import * as CryptoJS from 'crypto-js';
 
 /**

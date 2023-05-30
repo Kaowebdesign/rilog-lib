@@ -1,6 +1,5 @@
-import { BASE_URL } from "../constants";
-import { state } from "../state";
-
+import { BASE_URL } from '../constants';
+import { state } from '../state';
 
 type TSaveRequestResp = {
     result: 'SUCCESS' | 'ERROR';
@@ -21,10 +20,10 @@ const saveRequest = (data: string): Promise<TSaveRequestResp> => {
         },
         body: JSON.stringify({ requestData: data }),
     })
-    .then((response) => response.json())
-    .catch((error) => {
-        console.error('[Rilog-lib] Got error in connection send request ', error);
-    });
+        .then((response) => response.json())
+        .catch((error) => {
+            console.error('[Rilog-lib] Got error in connection send request ', error);
+        });
 };
 
 export { saveRequest };

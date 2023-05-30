@@ -1,5 +1,5 @@
-import { SUCCESS_RESPONSE_STATUS_START_CODE } from "../constants";
-import { IRilogRequest, IRilogResponse, TRilogPushRequest, TRilogPushResponse } from "../types/requests";
+import { SUCCESS_RESPONSE_STATUS_START_CODE } from '../constants';
+import { IRilogRequest, IRilogResponse, TRilogPushRequest, TRilogPushResponse } from '../types/requests';
 
 const checkEmptyRequest = (request: IRilogRequest): boolean => {
     let empty = false;
@@ -13,13 +13,13 @@ const checkEmptyRequest = (request: IRilogRequest): boolean => {
 
 const axiosAdapterRequest = (data: TRilogPushRequest): IRilogRequest | null => {
     let requestFull: IRilogRequest = {
-      url: '',
-      method: '',
-      headers: {},
-      data: {},
-      locationOrigin: null,
-      locationHref: null,
-      localStorage: null,
+        url: '',
+        method: '',
+        headers: {},
+        data: {},
+        locationOrigin: null,
+        locationHref: null,
+        localStorage: null,
     };
     // Fill Request data
     data?.url && (requestFull = { ...requestFull, url: data.url });
@@ -40,24 +40,24 @@ const checkEmptyResponse = (response: IRilogResponse): boolean => {
 
 const axiosAdapterResponse = (data: TRilogPushResponse): IRilogResponse | null => {
     let responseFull: IRilogResponse = {
-      data: {},
-      status: null,
+        data: {},
+        status: null,
     };
 
     if (Object.keys(data).length === 0) {
-      return null;
+        return null;
     }
 
     if (data?.status?.toString()[0] !== SUCCESS_RESPONSE_STATUS_START_CODE) {
-      return { data: data.response.data, status: data.status?.toString() };
+        return { data: data.response.data, status: data.status?.toString() };
     }
 
     if (data?.data) {
-      responseFull = {
-        ...responseFull,
-        data: data.data,
-        status: data?.response?.status?.toString() || data?.status?.toString() || null,
-      };
+        responseFull = {
+            ...responseFull,
+            data: data.data,
+            status: data?.response?.status?.toString() || data?.status?.toString() || null,
+        };
     }
 
     return checkEmptyResponse(responseFull) ? null : responseFull;
