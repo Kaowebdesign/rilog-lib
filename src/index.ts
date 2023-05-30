@@ -1,4 +1,3 @@
-import * as CryptoJS from 'crypto-js';
 // adapters
 import { axiosAdapterRequest, axiosAdapterResponse } from './adapters';
 // types

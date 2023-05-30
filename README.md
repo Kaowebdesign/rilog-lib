@@ -40,12 +40,20 @@ config: {
 
 ```javascript
 instance.interceptors.request.use(async function (request) { // Your axios instance
+
     Rilog.pushRequest(request);
+
+    return Promise.resolve(request)
 })
 instance.interceptors.response.use(function(response) {
+
     Rilog.pushResponse(response);
+
+    return Promise.resolve(response)
 }, function(error) {
+
     Rilog.pushResponse(error);
+    
     return Promise.reject(error);
 })
 ```
