@@ -1,5 +1,6 @@
 import { state } from "../state";
 import { IRilogRequestItem } from "../types";
+import * as CryptoJS from 'crypto-js';
 
 /**
  * Encryt request data for save request array

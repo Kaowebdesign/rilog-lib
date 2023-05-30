@@ -1,6 +1,6 @@
 {
   "name": "rilog-lib",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/Kaowebdesign/rilog-lib.git",
@@ -27,7 +27,10 @@
     "frontend debugger",
     "axios",
     "axios logger",
-    "axios debugger"
+    "axios debugger",
+    "react",
+    "react logger",
+    "react-logger"
   ],
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
