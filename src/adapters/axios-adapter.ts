@@ -26,7 +26,7 @@ const axiosAdapterRequest = (data: TRilogPushRequest): IRilogRequest | null => {
     data?.method && (requestFull = { ...requestFull, method: data.method });
     data?.headers && (requestFull = { ...requestFull, headers: data.headers });
     data?.data && (requestFull = { ...requestFull, data: data.data });
-    data?.params && (requestFull = { ...requestFull, data: { ...requestFull.data, ...data.params }})
+    data?.params && (requestFull = { ...requestFull, data: { ...requestFull.data, ...data.params } });
 
     return checkEmptyRequest(requestFull) ? null : requestFull;
 };
